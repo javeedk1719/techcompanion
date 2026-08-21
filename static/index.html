@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal — AI Technology Learning Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">SIGNAL</span>
+    </div>
+    <p class="brand-sub">tech awareness &amp; learning companion</p>
+
+    <nav class="navlist">
+      <button class="navitem active" data-view="setup">
+        <span class="navnum">01</span> Student setup
+      </button>
+      <button class="navitem" data-view="brief">
+        <span class="navnum">02</span> Daily brief
+      </button>
+      <button class="navitem" data-view="chat">
+        <span class="navnum">03</span> AI tutor chat
+      </button>
+      <button class="navitem" data-view="assessment">
+        <span class="navnum">04</span> Assessment
+      </button>
+      <button class="navitem" data-view="dashboard">
+        <span class="navnum">05</span> Dashboard
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <label class="apibase-label">API base</label>
+      <input id="apiBase" class="apibase-input" value="http://127.0.0.1:8000" />
+      <div class="userchip">
+        <span class="userchip-label">Active user ID</span>
+        <span id="activeUserId" class="userchip-value">— none —</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- 01 SETUP -->
+    <section class="view active" id="view-setup">
+      <header class="view-head">
+        <p class="eyebrow">Step 01</p>
+        <h1>Set up the student signal profile</h1>
+        <p class="lede">Everything downstream — the brief, the chat, the tests — is tuned from this profile. Fill it in once.</p>
+      </header>
+
+      <div class="card">
+        <h3>Create student</h3>
+        <div class="field-row">
+          <div class="field">
+            <label>Name</label>
+            <input id="su_name" placeholder="Asha Kumar" />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="su_email" placeholder="asha@student.edu" />
+          </div>
+        </div>
+        <button class="btn primary" id="btnCreateUser">Create student</button>
+        <p class="status" id="statusCreateUser"></p>
+      </div>
+
+      <div class="card">
+        <h3>Learning profile</h3>
+        <div class="field-row">
+          <div class="field wide">
+            <label>Goal</label>
+            <input id="pf_goal" placeholder="Become a backend developer" />
+          </div>
+          <div class="field">
+            <label>Current level</label>
+            <select id="pf_level">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field wide">
+            <label>Interests <span class="hint">comma separated</span></label>
+            <input id="pf_interests" placeholder="web development, AI, backend" />
+          </div>
+          <div class="field wide">
+            <label>Known skills <span class="hint">comma separated</span></label>
+            <input id="pf_skills" placeholder="Python basics, HTML" />
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Available time / day</label>
+            <input id="pf_time" placeholder="1 hour" />
+          </div>
+          <div class="field">
+            <label>Resource preference</label>
+            <select id="pf_resource">
+              <option value="articles">Articles</option>
+              <option value="video">Video</option>
+              <option value="hands-on">Hands-on</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" id="btnSaveProfile">Save profile</button>
+        <p class="status" id="statusSaveProfile"></p>
+      </div>
+    </section>
+
+    <!-- 02 BRIEF -->
+    <section class="view" id="view-brief">
+      <header class="view-head">
+        <p class="eyebrow">Step 02</p>
+        <h1><span class="live-dot"></span> Daily tech brief</h1>
+        <p class="lede">Pulled from live sources, summarized and tagged, then scored against the student's profile.</p>
+      </header>
+
+      <div class="actions-row">
+        <button class="btn" id="btnIngest">Pull latest tech</button>
+        <button class="btn" id="btnLoadBrief">Refresh brief</button>
+        <button class="btn" id="btnWhatsNext">What should I learn next?</button>
+      </div>
+      <p class="status" id="statusBrief"></p>
+
+      <div id="briefList" class="stack"></div>
+    </section>
+
+    <!-- 03 CHAT -->
+    <section class="view" id="view-chat">
+      <header class="view-head">
+        <p class="eyebrow">Step 03</p>
+        <h1>AI tutor chat</h1>
+        <p class="lede">Adaptive explanations, tuned to the student's level and goal.</p>
+      </header>
+
+      <div class="field-row">
+        <div class="field wide">
+          <label>Topic</label>
+          <input id="chatTopic" placeholder="REST APIs" />
+        </div>
+      </div>
+
+      <div class="chatbox" id="chatbox"></div>
+
+      <div class="chat-input-row">
+        <input id="chatMessage" placeholder="Ask something about this topic…" />
+        <button class="btn primary" id="btnSendChat">Send</button>
+      </div>
+      <p class="status" id="statusChat"></p>
+    </section>
+
+    <!-- 04 ASSESSMENT -->
+    <section class="view" id="view-assessment">
+      <header class="view-head">
+        <p class="eyebrow">Step 04</p>
+        <h1>AI assessment</h1>
+        <p class="lede">A short quiz generated for the topic and the student's current level.</p>
+      </header>
+
+      <div class="field-row">
+        <div class="field wide">
+          <label>Topic</label>
+          <input id="as_topic" placeholder="REST APIs" />
+        </div>
+        <div class="field">
+          <label>Questions</label>
+          <input id="as_num" type="number" value="3" min="1" max="10" />
+        </div>
+      </div>
+      <button class="btn primary" id="btnGenQuiz">Generate quiz</button>
+      <p class="status" id="statusQuiz"></p>
+
+      <form id="quizForm" class="stack"></form>
+      <button class="btn" id="btnSubmitQuiz" style="display:none;">Submit answers</button>
+      <div id="quizResult" class="card" style="display:none;"></div>
+    </section>
+
+    <!-- 05 DASHBOARD -->
+    <section class="view" id="view-dashboard">
+      <header class="view-head">
+        <p class="eyebrow">Step 05</p>
+        <h1>Progress dashboard</h1>
+        <p class="lede">What the student has covered, and where to nudge them next.</p>
+      </header>
+
+      <button class="btn" id="btnLoadDashboard">Refresh dashboard</button>
+
+      <div class="stat-grid" id="statGrid"></div>
+      <p class="nudge" id="nudgeText"></p>
+
+      <div class="card">
+        <h3>Build challenge</h3>
+        <div class="field-row">
+          <div class="field wide">
+            <label>Topic</label>
+            <input id="bc_topic" placeholder="REST APIs" />
+          </div>
+        </div>
+        <button class="btn" id="btnBuildChallenge">Suggest a project</button>
+        <p id="buildChallengeResult" class="result-text"></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
